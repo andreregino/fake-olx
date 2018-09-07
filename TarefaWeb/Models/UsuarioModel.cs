@@ -16,8 +16,7 @@ namespace TarefaWeb.Models
             string strConn = @"Data Source=localhost;
                                 Initial Catalog=BDVendaDireta;
                                 Integrated Security=true";
-            // User Id = sa; Password=dba;
-
+            
             conn = new SqlConnection(strConn);
             conn.Open();
         }
@@ -124,5 +123,35 @@ namespace TarefaWeb.Models
 
             return u;
         }
+
+        public Usuario Login(string email, string senha)
+        {
+            Usuario u = null;
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = @"SELECT * FROM Usuario
+                                WHERE Email = @email AND Senha = @senha";
+
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@senha", senha);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                u = new Usuario
+                {
+                    UsuarioId = reader.GetInt32(0),
+                    Nome = reader.GetString(1),
+                    Email = reader.GetString(2),
+                    Senha = reader.GetString(3),
+                    Receita = reader.GetDecimal(4)
+                };
+            }
+
+            return u;
+        }
+
     }
 }

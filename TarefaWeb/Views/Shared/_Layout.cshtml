@@ -9,6 +9,7 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -16,16 +17,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
+
                 </button>
-                @Html.ActionLink("Fake OLX", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Fake OLX", "Index", "", new { area = "" }, new { @class = "navbar-brand" })
+                @if ((string)@Session["usuario"] != null) {
+                <span class="welcome">Bem vindo, @Session["usuario"] - R$ @Session["receita"]</span>
+                <a href="/Usuario/Logout">Logout</a>
+                }
+                
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
             </div>
         </div>
     </div>
-
+    <p></p>
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -38,3 +44,14 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 </body>
 </html>
+
+
+<style>
+    .welcome {
+        font-size: 16px;
+        color: white;
+        vertical-align: center;
+        margin-top: 15px;
+        display: inline-block;
+    }
+</style>

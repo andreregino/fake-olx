@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table table-striped">
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.ProdutoId</td>
+            <td>@p.Nome</td>
+            <td>@p.Preco</td>
+            <td>@(p.Vendido == true ? "Fora de Estoque" : "Em Estoque" )</td>
+            <td>@Html.ActionLink("Comprar", "View", new { id = p.ProdutoId })</td>
+        </tr>
+    }
+</table>
+<a href="/Produto/Create">Adicionar</a>
+

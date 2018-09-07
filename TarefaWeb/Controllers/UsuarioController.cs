@@ -15,6 +15,33 @@ namespace TarefaWeb.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Login(Usuario u)
+        {
+            using (UsuarioModel model = new UsuarioModel())
+            {
+               Usuario x =  model.Login(u.Email, u.Senha);
+               if (x.Nome != null)
+                {
+                    Session["usuario"] = x.Nome;
+                    Session["email"] = x.Email;
+                    Session["receita"] = x.Receita;
+                    return RedirectToAction("Index", "Produto", new { area = "" });
+                }
+            }
+           
+            return View(u);
+        }
+
+        public ActionResult Logout()
+        {
+            Session["usuario"] = null;
+            Session["email"] = null;
+            Session["receita"] = null;
+            return RedirectToAction("Login");
+
+        }
+
         // GET: Usuario
         [HttpGet]
         // GET: Tarefa
@@ -28,12 +55,7 @@ namespace TarefaWeb.Controllers
             } //model.Dispose();
         }
 
-        public JsonResult Lista()
-        {
-            using (UsuarioModel model = new UsuarioModel())
-                return Json(model.Read(), JsonRequestBehavior.AllowGet);
-        }
-
+        
         [HttpGet]
         public ActionResult Create()
         {
@@ -51,7 +73,7 @@ namespace TarefaWeb.Controllers
                 using (UsuarioModel model = new UsuarioModel())
                 {
                     model.Create(u);
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Login");
                 }
             }
             else
